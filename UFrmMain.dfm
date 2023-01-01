@@ -3,7 +3,7 @@ object FrmMain: TFrmMain
   Top = 0
   Caption = 'Shopping Base'
   ClientHeight = 805
-  ClientWidth = 951
+  ClientWidth = 967
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@ object FrmMain: TFrmMain
   object DBGrid: TDBGrid
     Left = 8
     Top = 190
-    Width = 935
-    Height = 590
+    Width = 951
+    Height = 571
     Align = alCustom
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataSource = DSQ
@@ -131,14 +131,21 @@ object FrmMain: TFrmMain
         Visible = True
       end>
   end
-  object StatusBar1: TStatusBar
+  object StatusBar: TStatusBar
     Left = 0
     Top = 786
-    Width = 951
+    Width = 967
     Height = 19
-    Panels = <>
-    ExplicitTop = 715
-    ExplicitWidth = 1073
+    Panels = <
+      item
+        Text = #1057#1090#1088#1086#1082':'
+        Width = 150
+      end
+      item
+        Text = #1057#1091#1084#1084#1072':'
+        Width = 150
+      end>
+    ExplicitWidth = 951
   end
   object PanelEdit: TPanel
     Left = 0
@@ -159,42 +166,42 @@ object FrmMain: TFrmMain
       Caption = #1044#1072#1090#1072' '#1087#1086#1082#1091#1087#1082#1080':'
     end
     object Label2: TLabel
-      Left = 167
+      Left = 137
       Top = 17
       Width = 91
       Height = 13
       Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1090#1086#1074#1072#1088#1072':'
     end
     object Label3: TLabel
-      Left = 447
+      Left = 409
       Top = 17
       Width = 49
       Height = 13
       Caption = #1045#1076#1080#1085#1080#1094#1099':'
     end
     object Label4: TLabel
-      Left = 527
+      Left = 481
       Top = 17
-      Width = 54
+      Width = 58
       Height = 13
-      Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100
+      Caption = #1057#1090#1086#1080#1084#1086#1089#1090#1100':'
     end
     object Label5: TLabel
-      Left = 607
+      Left = 553
       Top = 17
       Width = 52
       Height = 13
       Caption = #1043#1072#1088#1072#1085#1090#1080#1103':'
     end
     object Label6: TLabel
-      Left = 837
+      Left = 768
       Top = 17
       Width = 46
       Height = 13
-      Caption = #1052#1072#1075#1072#1079#1080#1085';'
+      Caption = #1052#1072#1075#1072#1079#1080#1085':'
     end
     object Label7: TLabel
-      Left = 687
+      Left = 625
       Top = 17
       Width = 102
       Height = 13
@@ -203,14 +210,15 @@ object FrmMain: TFrmMain
     object DBEdit1: TDBEdit
       Left = 16
       Top = 36
-      Width = 137
+      Width = 113
       Height = 21
       DataField = 'Date_to_buy'
       DataSource = DSQ
       TabOrder = 0
+      OnClick = DBEdit1Click
     end
     object DBEdit3: TDBEdit
-      Left = 167
+      Left = 137
       Top = 36
       Width = 266
       Height = 21
@@ -219,7 +227,7 @@ object FrmMain: TFrmMain
       TabOrder = 1
     end
     object DBEdit2: TDBEdit
-      Left = 447
+      Left = 409
       Top = 36
       Width = 66
       Height = 21
@@ -228,7 +236,7 @@ object FrmMain: TFrmMain
       TabOrder = 2
     end
     object DBEdit4: TDBEdit
-      Left = 527
+      Left = 481
       Top = 36
       Width = 66
       Height = 21
@@ -237,7 +245,7 @@ object FrmMain: TFrmMain
       TabOrder = 3
     end
     object DBEdit5: TDBEdit
-      Left = 608
+      Left = 553
       Top = 36
       Width = 66
       Height = 21
@@ -245,8 +253,8 @@ object FrmMain: TFrmMain
       DataSource = DSQ
       TabOrder = 4
     end
-    object DBComboBox1: TDBComboBox
-      Left = 837
+    object DBCmBoxShop: TDBComboBox
+      Left = 768
       Top = 36
       Width = 122
       Height = 21
@@ -268,7 +276,7 @@ object FrmMain: TFrmMain
       TabOrder = 6
     end
     object DBEdit6: TDBEdit
-      Left = 687
+      Left = 625
       Top = 36
       Width = 137
       Height = 21
@@ -332,16 +340,7 @@ object FrmMain: TFrmMain
       Anchors = [akTop, akRight]
       TabOrder = 4
       OnSelect = CmBoxVclStyleSelect
-      ExplicitLeft = 809
     end
-  end
-  object ADOTable: TADOTable
-    AutoCalcFields = False
-    Connection = ADOConnect
-    CursorType = ctStatic
-    TableName = 'Shopping_data'
-    Left = 344
-    Top = 208
   end
   object ADOConnect: TADOConnection
     ConnectionString = 
@@ -351,13 +350,8 @@ object FrmMain: TFrmMain
     LoginPrompt = False
     Mode = cmShareDenyNone
     Provider = 'Microsoft.Jet.OLEDB.4.0'
-    Left = 256
-    Top = 208
-  end
-  object DS: TDataSource
-    DataSet = ADOTable
-    Left = 440
-    Top = 208
+    Left = 248
+    Top = 272
   end
   object ADOQuery: TADOQuery
     Connection = ADOConnect
@@ -371,8 +365,8 @@ object FrmMain: TFrmMain
     Top = 280
   end
   object OpenDialog: TOpenDialog
-    Left = 520
-    Top = 208
+    Left = 528
+    Top = 280
   end
   object DSQ: TDataSource
     DataSet = ADOQuery

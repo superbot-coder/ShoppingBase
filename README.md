@@ -1,4 +1,4 @@
-﻿##Demo Shopping Base
+﻿## Demo Shopping Base
 
 [RU]
 Это демо использования компонентов DELPHI ADO ACCESS
@@ -7,6 +7,7 @@
 This is a Demo of using DELPHI ADO ACCESS components
 
 ![Screenshot](https://github.com/superbot-coder/ShoppingBase/blob/main/image/ScreenShot-01.PNG "")
+![Screenshot](https://github.com/superbot-coder/ShoppingBase/blob/main/image/ScreenShot-02.PNG "")
 
 **Требования для компиляции и зависимости:**
 - RAD Studio Delphi 10.4 и выше

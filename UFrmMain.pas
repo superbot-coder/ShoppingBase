@@ -6,15 +6,12 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.WinXCtrls, Vcl.Grids,
   Vcl.DBGrids, Data.Win.ADODB, Vcl.StdCtrls, Vcl.NumberBox, Vcl.Themes,
-  Vcl.ControlList, Vcl.ExtCtrls, Vcl.DBCtrls, acDBGrid, SynEdit, SynDBEdit,
-  Vcl.Mask, Vcl.ComCtrls;
+  Vcl.ControlList, Vcl.ExtCtrls, Vcl.DBCtrls, acDBGrid, Vcl.Mask, Vcl.ComCtrls;
 
 type
   TFrmMain = class(TForm)
-    ADOTable: TADOTable;
     ADOConnect: TADOConnection;
     DBGrid: TDBGrid;
-    DS: TDataSource;
     ADOQuery: TADOQuery;
     OpenDialog: TOpenDialog;
     PanelEdit: TPanel;
@@ -23,7 +20,7 @@ type
     DBEdit2: TDBEdit;
     DBEdit4: TDBEdit;
     DBEdit5: TDBEdit;
-    DBComboBox1: TDBComboBox;
+    DBCmBoxShop: TDBComboBox;
     DBNavigator: TDBNavigator;
     Label1: TLabel;
     Label2: TLabel;
@@ -33,7 +30,7 @@ type
     Label6: TLabel;
     DBEdit6: TDBEdit;
     Label7: TLabel;
-    StatusBar1: TStatusBar;
+    StatusBar: TStatusBar;
     DSQ: TDataSource;
     PanelSearch: TPanel;
     lblEdSearch: TLabeledEdit;
@@ -46,8 +43,10 @@ type
     procedure ChBoxEditEnableClick(Sender: TObject);
     procedure BtnSearchClick(Sender: TObject);
     procedure BtnSearchCloseClick(Sender: TObject);
+    procedure DBEdit1Click(Sender: TObject);
   private
-    { Private declarations }
+    procedure UpdateStatusBar;
+    Procedure AddShops;
   public
     { Public declarations }
   end;
@@ -61,6 +60,22 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TFrmMain.AddShops;
+begin
+  DSQ.Enabled := false;
+  ADOQuery.SQL.Text := 'SELECT DISTINCT Shop_Name FROM shopping_data';
+  ADOQuery.Open;
+  ADOQuery.First;
+  DBCmBoxShop.Items.Clear;
+  while Not ADOQuery.Eof do
+  begin
+    DBCmBoxShop.Items.Add(ADOQuery.Fields[0].AsString);
+    ADOQuery.Next;
+  end;
+  //DSQ.Enabled := true;
+  //ShowMessage(IntToStr(ADOQuery.RecordCount) + ' ' + #13 + DBCmBoxShop.Items.Text);
+end;
 
 procedure TFrmMain.BtnSearchClick(Sender: TObject);
 var
@@ -87,12 +102,16 @@ begin
     Open;
     Sort := 'Product_Name ASC'
   end;
+  UpdateStatusBar;
 end;
 
 procedure TFrmMain.BtnSearchCloseClick(Sender: TObject);
 begin
   ADOQuery.SQL.Text := 'SELECT * FROM shopping_data';
   ADOQuery.Open;
+  lblEdSearch.Clear;
+  DSQ.Enabled := true;
+  UpdateStatusBar;
 end;
 
 procedure TFrmMain.ChBoxEditEnableClick(Sender: TObject);
@@ -108,6 +127,8 @@ begin
     //DBGrid.Enabled    := false;
     PanelEdit.Visible := true;
     DBGrid.Top        := 162;
+    DBGrid.SelectedIndex := -1;
+
   end
     else
   begin
@@ -119,6 +140,7 @@ begin
    //DBGrid.Enabled    := true;
    PanelEdit.Visible := false;
    DBGrid.Top        := 42;
+   UpdateStatusBar;
   end;
 end;
 
@@ -126,6 +148,11 @@ procedure TFrmMain.CmBoxVclStyleSelect(Sender: TObject);
 begin
   TStyleManager.SetStyle(CmBoxVclStyle.Text);
 
+end;
+
+procedure TFrmMain.DBEdit1Click(Sender: TObject);
+begin
+  ShowMessage(IntToStr(DBGrid.SelectedRows.Count));
 end;
 
 procedure TFrmMain.FormCreate(Sender: TObject);
@@ -146,7 +173,27 @@ begin
   ADOConnect.ConnectionString := ConnectString;
   ADOConnect.Connected := true;
   ADOQuery.Active      := true;
-  ADOTable.Active      := true;
+  AddShops;
+  BtnSearchCloseClick(Nil);
+  UpdateStatusBar;
+end;
+
+procedure TFrmMain.UpdateStatusBar;
+var
+  i: Integer;
+begin
+  DSQ.Enabled := false;
+  i := 0;
+  ADOQuery.First;
+  while ADOQuery.Eof = false do
+  begin
+    i := i + ADOQuery.FieldByName('Cost').AsInteger;
+    ADOQuery.Next;
+  end;
+  ADOQuery.First;
+  DSQ.Enabled := true;
+  StatusBar.Panels[0].Text := 'Записей: ' + IntToStr(ADOQuery.RecordCount);
+  StatusBar.Panels[1].Text := 'Сумма: ' + IntToStr(i);
 end;
 
 end.
