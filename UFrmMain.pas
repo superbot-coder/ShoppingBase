@@ -8,6 +8,8 @@ uses
   Vcl.DBGrids, Data.Win.ADODB, Vcl.StdCtrls, Vcl.NumberBox, Vcl.Themes,
   Vcl.ControlList, Vcl.ExtCtrls, Vcl.DBCtrls, acDBGrid, Vcl.Mask, Vcl.ComCtrls;
 
+type TSortType = (stASC, stDESC);
+
 type
   TFrmMain = class(TForm)
     ADOConnect: TADOConnection;
@@ -44,7 +46,10 @@ type
     procedure BtnSearchClick(Sender: TObject);
     procedure BtnSearchCloseClick(Sender: TObject);
     procedure DBEdit1Click(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
   private
+    FFieldLastSorted: string;
+    FSortingDirection: TSortType;
     procedure UpdateStatusBar;
     Procedure AddShops;
   public
@@ -153,6 +158,32 @@ end;
 procedure TFrmMain.DBEdit1Click(Sender: TObject);
 begin
   ShowMessage(IntToStr(DBGrid.SelectedRows.Count));
+end;
+
+procedure TFrmMain.DBGridTitleClick(Column: TColumn);
+var
+  SortParam: string;
+begin
+  if FFieldLastSorted = Column.FieldName then
+  begin
+    if FSortingDirection = stASC then
+    begin
+      SortParam := Column.FieldName + ' DESC';
+      FSortingDirection := stDESC;
+    end
+    else
+    begin
+      SortParam := Column.FieldName + ' ASC';
+      FSortingDirection := stASC;
+    end;
+  end
+  else
+  begin
+    SortParam := Column.FieldName + ' DESC';
+    FFieldLastSorted  := Column.FieldName;
+    FSortingDirection := stDESC;
+  end;
+  ADOQuery.Sort := SortParam;
 end;
 
 procedure TFrmMain.FormCreate(Sender: TObject);

@@ -31,6 +31,7 @@ object FrmMain: TFrmMain
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnTitleClick = DBGridTitleClick
     Columns = <
       item
         Expanded = False
@@ -145,7 +146,6 @@ object FrmMain: TFrmMain
         Text = #1057#1091#1084#1084#1072':'
         Width = 150
       end>
-    ExplicitWidth = 951
   end
   object PanelEdit: TPanel
     Left = 0
